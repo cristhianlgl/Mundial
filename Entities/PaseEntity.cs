@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Entities
 {
-    public class Pase
+    public class PaseEntity
     {
         public string PaseId { get; set; }
         public string Fase { get; set; }
-        public Equipo Equipo { get; set; }
+        public EquipoEntity Equipo { get; set; }
     }
 }

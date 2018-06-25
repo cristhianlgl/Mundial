@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Entities
 {
-    public class Partido
+    public class PartidoEntity
     {
         public string PartidoId { get; set; }
-        public Equipo Equipo1 { get; set; }
-        public Equipo Equipo2 { get; set; }
+        public EquipoEntity Equipo1 { get; set; }
+        public EquipoEntity Equipo2 { get; set; }
         public int MarcadorE1 { get; set; }
         public int MarcadorE2 { get; set; }
     }

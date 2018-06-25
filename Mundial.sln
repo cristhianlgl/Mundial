@@ -4,6 +4,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mundial", "Mundial\Mundial.csproj", "{7D1DEEDC-61EE-48C7-BC52-575295C55D37}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9CC87169-5805-4082-89AE-045F4EC6D336} = {9CC87169-5805-4082-89AE-045F4EC6D336}
+		{3308DECD-C3C5-4200-B49A-CDFB3B158E7A} = {3308DECD-C3C5-4200-B49A-CDFB3B158E7A}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{1882C37E-D0DF-4100-BDE2-A2452A67A989}"
 EndProject
