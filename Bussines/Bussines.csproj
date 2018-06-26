@@ -41,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="JugadorBO.cs" />
+    <Compile Include="PartidosBO.cs" />
+    <Compile Include="PasesBO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

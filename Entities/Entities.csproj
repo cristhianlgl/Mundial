@@ -48,7 +48,9 @@
     <Compile Include="JugadorEntity.cs" />
     <Compile Include="PartidoEntity.cs" />
     <Compile Include="PaseEntity.cs" />
+    <Compile Include="Polla.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\PartidoCompleto.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
