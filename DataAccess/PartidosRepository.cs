@@ -63,15 +63,18 @@ namespace DataAccess
         }
 
         
-        public static List<PartidoEntity> GetMarcadoresPorJugador(int jugadorID)
+        public static List<PartidoEntity> GetMarcadoresPorJugador(int jugadorID, string fase)
         {
             List<PartidoEntity> lista = new List<PartidoEntity>();
             using (MySqlConnection conx = new MySqlConnection(ConfigurationManager.ConnectionStrings["Mysql"].ToString()))
             {
                 conx.Open();
-                string sql = @"SELECT * FROM pollapartidos WHERE idjugador = @idjugador;";
+                string sql = @"SELECT * FROM pollapartidos inner join partido
+                                on partido.idPartido = pollapartidos.idPartido
+                                WHERE idjugador =@idjugador and fase =@fase ;";
                 MySqlCommand cmd = new MySqlCommand(sql, conx);
                 cmd.Parameters.AddWithValue("idjugador", jugadorID);
+                cmd.Parameters.AddWithValue("fase", fase);
                 MySqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (reader.Read())
                 {

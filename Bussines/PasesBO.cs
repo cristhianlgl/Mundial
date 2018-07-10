@@ -10,9 +10,9 @@ namespace Bussines
 {
     public static class PasesBO
     {
-        public static List<PaseEntity> GetPasesPorJugador(int jugadorID)
+        public static List<PaseEntity> GetPasesPorJugador(int jugadorID, string fase)
         {
-            return PasesRepository.GetPasesPorJugador(jugadorID);
+            return PasesRepository.GetPasesPorJugador(jugadorID, fase);
         }
 
         public static void SavePuntosPases(PartidoEntity Pases)

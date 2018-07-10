@@ -10,9 +10,9 @@ namespace Bussines
 {
     public static class PartidosBO
     {
-        public static List<PartidoEntity> GetMarcadoresPorJugador(int jugadorID) 
+        public static List<PartidoEntity> GetMarcadoresPorJugador(int jugadorID, string fase) 
         {
-            return PartidosRepository.GetMarcadoresPorJugador(jugadorID);
+            return PartidosRepository.GetMarcadoresPorJugador(jugadorID, fase);
         }
 
         public  static void SavePuntosPartido(PartidoEntity Marcador)

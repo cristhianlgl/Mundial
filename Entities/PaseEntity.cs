@@ -13,6 +13,7 @@ namespace Entities
         public string Grupo { get; set; }
         public string Fase { get; set; }
         public string EquipoId { get; set; }
+        public int Goles { get; set; }
         public int Puntos { get; set; }
     }
 }

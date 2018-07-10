@@ -45,9 +45,11 @@ namespace Mundial
         private void CalcularPuntosButton_Click(object sender, EventArgs e)
         {
             CalcularPuntosButton.Cursor = Cursors.WaitCursor;
-            List<PartidoEntity> PartidosResultados = PartidosBO.GetMarcadoresPorJugador(0);
-            List<PaseEntity> PasesResultado = PasesBO.GetPasesPorJugador(0);
-            if (PartidosResultados.Count > 0)
+            List<PartidoEntity> PartidosResultadosE1 = PartidosBO.GetMarcadoresPorJugador(0,"E1");
+            List<PartidoEntity> PartidosResultadosE2 = PartidosBO.GetMarcadoresPorJugador(0,"E2");
+            List<PaseEntity> PasesResultadoE1 = PasesBO.GetPasesPorJugador(0,"E1");
+            List<PaseEntity> PasesResultadoE2 = PasesBO.GetPasesPorJugador(0,"E2");
+            if (PartidosResultadosE1.Count > 0)
             {
                 ListaJugadores = JugadorBO.GetAllJugadores();
                 if (ListaJugadores.Count > 0)
@@ -56,9 +58,10 @@ namespace Mundial
                     {
                         if (jugador.JugadorId > 0)
                         {
-                            JugadorBO.CalcularPartidosE1(jugador, PartidosResultados);
-                            //jugador.PuntosEtapa1 = 0;
-                            JugadorBO.CalcularPasesE1(jugador, PasesResultado);
+                            JugadorBO.CalcularPartidos(jugador, PartidosResultadosE1, "E1");
+                            JugadorBO.CalcularPasesE1(jugador, PasesResultadoE1);
+                            JugadorBO.CalcularPartidos(jugador, PartidosResultadosE2, "E2");
+                            JugadorBO.CalcularPasesE2(jugador, PasesResultadoE2);
                             JugadorBO.SavePuntosJugador(jugador);
                         }
                     }

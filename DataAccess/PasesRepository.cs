@@ -13,17 +13,19 @@ namespace DataAccess
     public static class PasesRepository
     {
 
-        public static List<PaseEntity> GetPasesPorJugador(int jugadorID)
+        public static List<PaseEntity> GetPasesPorJugador(int jugadorID, string fase)
         {
             List<PaseEntity> lista = new List<PaseEntity>();
             using (MySqlConnection conx = new MySqlConnection(ConfigurationManager.ConnectionStrings["Mysql"].ToString()))
             {
                 conx.Open();
-                string sql = @"SELECT pollapases.*, equipos.grupo  FROM pollapases inner join
-                               equipos on pollapases.Equipo = equipos.codEquipo 
-                               where idjugador = @idjugador;";
+                string sql = @"SELECT pollapases.*, equipos.grupo  FROM pase INNER JOIN (pollapases inner join
+                               equipos on pollapases.Equipo = equipos.codEquipo) 
+                               ON pase.idPase = pollapases.idPase
+                               where idjugador = @idjugador AND Fase = @fase;";
                 MySqlCommand cmd = new MySqlCommand(sql, conx);
                 cmd.Parameters.AddWithValue("idjugador", jugadorID);
+                cmd.Parameters.AddWithValue("fase", fase);
                 MySqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (reader.Read())
                 {
@@ -47,6 +49,12 @@ namespace DataAccess
             item.JugadorId = Convert.ToInt32(reader["idjugador"]);
             item.Grupo = Convert.ToString(reader["grupo"]);
             item.Puntos = Convert.ToInt32(reader["puntos"]);
+            item.Goles = 0;
+            if (item.PaseId == "GOL")
+            {
+                item.Goles = item.Puntos;
+                item.Puntos = 0;
+            }
             return item;
         }
 
