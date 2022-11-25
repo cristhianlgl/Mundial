@@ -3,65 +3,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data;
 using Entities;
 using MySql.Data.MySqlClient;
 using System.Configuration;
 using System.Data;
+using Dapper;
 
 
 namespace DataAccess
 {
     public static class PartidosRepository
     {
+        private static readonly string queryUpdateMarcador = @"UPDATE PollaPartidos  
+                                            SET marcador1 = @MarcadorE1 , marcador2 = @MarcadorE2 
+                                            WHERE idjugador = @JugadorId AND idPartido= @PartidoId";
+
+
         public static List<PartidoEntity> GetPartidosAJugar()
         {
-            List<PartidoEntity> lista = new List<PartidoEntity>();
             using (MySqlConnection conx = new MySqlConnection(ConfigurationManager.ConnectionStrings["Mysql"].ToString()))
             {
                 conx.Open();
-                string sql = @"SELECT partido.*, E1.nombre as nombreE1 , E1.grupo as grupoE1, E2.nombre as nombreE2,
-                              E1.grupo as grupoE2 FROM equipos as E2 inner join (partido inner join equipos as E1 on
-                              E1.codEquipo = partido.equipo1) on E2.codEquipo = partido.equipo2 ;";
-                MySqlCommand cmd = new MySqlCommand(sql, conx);
-                MySqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-                while (reader.Read())
-                {
-                    lista.Add(LoadPartidoAjugar(reader));
-                }
+                string sql = @"SELECT idjugador as JugadorId, idPartido as PartidoId, equipo1, E1.nombre as NombreE1,
+                                    marcador1 as MarcadorE1, equipo2, E2.nombre as NombreE2, marcador2 as MarcadorE2,
+                                    puntos, fase
+                               FROM PollaPartidos INNER JOIN Partido USING (idPartido)
+                                   INNER JOIN Equipos as E2 ON E2.codEquipo = Partido.equipo2
+                                   INNER JOIN Equipos as E1 ON E1.codEquipo = Partido.equipo1
+                               ORDER BY idjugador, idPartido;";
+                return conx.Query<PartidoEntity>(sql).ToList();      
             }
-            return lista;
         }
-
-        private static PartidoEntity LoadPartidoAjugar(IDataReader reader)
-        {
-           
-            
-                PartidoEntity item = new PartidoEntity()
-                {
-                    PartidoId = Convert.ToString(reader["idPartido"]),
-                    Equipo1 =  new EquipoEntity()
-                                            {
-                                                EquipoId = Convert.ToInt32(reader["equipo1"]),
-                                                Nombre = Convert.ToString(reader["nombreE1"]),
-                                                Grupo = Convert.ToString(reader["grupoE1"])
-                                            },
-
-                    Equipo2 =  new EquipoEntity()
-                                            {
-                                                EquipoId = Convert.ToInt32(reader["equipo1"]),
-                                                Nombre = Convert.ToString(reader["nombreE1"]),
-                                                Grupo = Convert.ToString(reader["grupoE1"])
-                                            },                    
-                    Fase = Convert.ToString(reader["fase"]),
-                    MarcadorE1 = 0,
-                    MarcadorE2 = 0
-                };
-
-
-                return item;
-
-        }
-
         
         public static List<PartidoEntity> GetMarcadoresPorJugador(int jugadorID, string fase)
         {
@@ -69,8 +42,8 @@ namespace DataAccess
             using (MySqlConnection conx = new MySqlConnection(ConfigurationManager.ConnectionStrings["Mysql"].ToString()))
             {
                 conx.Open();
-                string sql = @"SELECT * FROM pollapartidos inner join partido
-                                on partido.idPartido = pollapartidos.idPartido
+                string sql = @"SELECT * FROM PollaPartidos inner join Partido
+                                on Partido.idPartido = PollaPartidos.idPartido
                                 WHERE idjugador =@idjugador and fase =@fase ;";
                 MySqlCommand cmd = new MySqlCommand(sql, conx);
                 cmd.Parameters.AddWithValue("idjugador", jugadorID);
@@ -112,6 +85,52 @@ namespace DataAccess
                 }
             }         
         
+        }
+
+        public static bool SaveAllByJugador(JugadorEntity jugador)
+        {
+            bool resp = false;
+            using (MySqlConnection conx = new MySqlConnection(ConfigurationManager.ConnectionStrings["Mysql"].ToString()))
+            {
+                try
+                {
+                    conx.Open();
+                    
+                    foreach (var marcador in jugador.Marcadores)
+                    {
+                        conx.Execute(queryUpdateMarcador, marcador);
+                    }
+                    resp = true;
+                }
+                catch
+                {
+                    throw;
+                }
+                finally 
+                {
+                    conx.Close();                
+                }
+            }
+            return resp;
+        }
+
+        public static bool SaveOneByJugador(PartidoEntity marcador)
+        {
+            using (MySqlConnection conx = new MySqlConnection(ConfigurationManager.ConnectionStrings["Mysql"].ToString()))
+            {
+                try
+                {
+                    return Convert.ToBoolean(conx.Execute(queryUpdateMarcador, marcador));
+                }
+                catch
+                {
+                    throw;
+                }
+                finally
+                {
+                    conx.Close();
+                }
+            }
         }
     }
 }

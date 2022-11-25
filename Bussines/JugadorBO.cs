@@ -104,19 +104,27 @@ namespace Bussines
 					{
 						if (paseJ.EquipoId == result.EquipoId)
 						{
-							paseJ.Puntos += 2;
 							//puntos adicionales
 							switch (paseJ.PaseId)
 							{
-								case "GOL": if (paseJ.Goles == result.Goles)
-											    paseJ.Puntos += 2;
+								case "CAM": paseJ.Puntos += 5; //En total 5 puntos - Campeon
 											break;
-								case "CAM": paseJ.Puntos += 3; //En total 5 puntos
+								case "TER": paseJ.Puntos += 3; //En Total 3 puntos -  Tercer Puesto
 											break;
-								case "TER": paseJ.Puntos += 1;
-											break;
+                                case "GOL": paseJ.Puntos += 3; //En Total 3 puntos - Nombre Goleador 
+                                            break;
+                                default :   paseJ.Puntos += 2; //Acierto de pase de un Equipo
+                                            break;
 							}
 						}
+
+						// se valida que el pase se Goleador y se compra los goles marcados coincidan con los resultados 
+						//ya que puede ganar puntos aunque no coincida el goleador
+						if (paseJ.PaseId == "GOL")
+						{
+							if (paseJ.Goles == result.Goles)  //Cantidade de Goles
+								paseJ.Puntos += 2;
+						} 
 					}
 				}
 				jugador.PuntosEtapa2 += paseJ.Puntos;

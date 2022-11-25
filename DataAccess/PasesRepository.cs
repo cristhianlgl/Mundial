@@ -19,9 +19,9 @@ namespace DataAccess
             using (MySqlConnection conx = new MySqlConnection(ConfigurationManager.ConnectionStrings["Mysql"].ToString()))
             {
                 conx.Open();
-                string sql = @"SELECT pollapases.*, equipos.grupo  FROM pase INNER JOIN (pollapases inner join
-                               equipos on pollapases.Equipo = equipos.codEquipo) 
-                               ON pase.idPase = pollapases.idPase
+                string sql = @"SELECT PollaPases.*, Equipos.grupo  FROM Pase INNER JOIN (PollaPases inner join
+                               Equipos on PollaPases.Equipo = Equipos.codEquipo) 
+                               ON Pase.idPase = PollaPases.idPase
                                where idjugador = @idjugador AND Fase = @fase;";
                 MySqlCommand cmd = new MySqlCommand(sql, conx);
                 cmd.Parameters.AddWithValue("idjugador", jugadorID);

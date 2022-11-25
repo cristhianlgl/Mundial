@@ -54,8 +54,8 @@ namespace DataAccess
             JugadorEntity item = new JugadorEntity();
             item.JugadorId = Convert.ToInt32(reader["idjugador"]);
             item.Nombre = reader["nombre"].ToString();
-            item.PuntosEtapa1 = Convert.ToInt32(reader["puntosEtapa1"]);
-            item.PuntosEtapa2 = Convert.ToInt32(reader["puntosEtapa2"]);
+            item.PuntosEtapa1 = reader["puntosEtapa1"] == DBNull.Value ?  0 :  Convert.ToInt32(reader["puntosEtapa1"]);
+            item.PuntosEtapa2 = reader["puntosEtapa2"] == DBNull.Value ?  0 :  Convert.ToInt32(reader["puntosEtapa2"]);
             return item;
         }
         
