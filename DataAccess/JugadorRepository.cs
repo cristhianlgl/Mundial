@@ -7,58 +7,26 @@ using Entities;
 using MySql.Data.MySqlClient;
 using System.Configuration;
 using System.Data;
+using Dapper;
 
 
 namespace DataAccess
 {
-    public static class JugadorRepository
+    public class JugadorRepository : BaseRepository
     {
 
-        public static List<JugadorEntity> GetAll()
+        public IEnumerable<JugadorEntity> GetAll(string TipoPolla)
         {
-            List<JugadorEntity> lista = new List<JugadorEntity>();
-            using (MySqlConnection conx = new MySqlConnection(ConfigurationManager.ConnectionStrings["Mysql"].ToString()))
+            using (Conn) 
             {
-                conx.Open();
-                string sql = @"SELECT * FROM jugador";
-                MySqlCommand cmd = new MySqlCommand(sql, conx);
-                MySqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-                while(reader.Read())
-                {
-                    lista.Add(LoadJugador(reader));
-                }
+                string query = @"SELECT idjugador as JugadorId, nombre, puntosEtapa1, puntosEtapa2 FROM jugador inner join 
+                                ( SELECT idjugador from  PollaPartidos 
+                                    where idPolla = idPolla group by idjugador) 
+                               as tp using(idjugador)";
+                return Conn.Query<JugadorEntity>(query, new { idPolla = TipoPolla });
             }
-            return lista;
         }
-
-        public static List<JugadorEntity> GetById(int jugadorId)
-        {
-            List<JugadorEntity> lista = new List<JugadorEntity>();
-            using (MySqlConnection conx = new MySqlConnection(ConfigurationManager.ConnectionStrings["Mysql"].ToString()))
-            {
-                conx.Open();
-                string sql = @"SELECT * FROM jugador WHERE idjugador = @ID ";
-                MySqlCommand cmd = new MySqlCommand(sql, conx);
-                cmd.Parameters.AddWithValue("ID", jugadorId);
-                MySqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-                while (reader.Read())
-                {
-                    lista.Add(LoadJugador(reader));
-                }
-            }
-            return lista;
-        }
-
-        private static JugadorEntity LoadJugador(IDataReader reader)
-        {
-            JugadorEntity item = new JugadorEntity();
-            item.JugadorId = Convert.ToInt32(reader["idjugador"]);
-            item.Nombre = reader["nombre"].ToString();
-            item.PuntosEtapa1 = reader["puntosEtapa1"] == DBNull.Value ?  0 :  Convert.ToInt32(reader["puntosEtapa1"]);
-            item.PuntosEtapa2 = reader["puntosEtapa2"] == DBNull.Value ?  0 :  Convert.ToInt32(reader["puntosEtapa2"]);
-            return item;
-        }
-        
+       
         public static void SavePuntosJugador(JugadorEntity jugador)
         {
             using(MySqlConnection conx =  new MySqlConnection(ConfigurationManager.ConnectionStrings["Mysql"].ToString()))

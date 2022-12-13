@@ -16,7 +16,12 @@ namespace Mundial
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            var intro = new Intro();
+            intro.ShowDialog();
+            if (intro.DialogResult == DialogResult.OK) 
+            {
+                Application.Run(new Form1());
+            }
         }
     }
 }

@@ -9,15 +9,8 @@ using Entities;
 
 namespace DataAccess
 {
-    public class ConfiguracionDAL
+    public class ConfiguracionDAL : BaseRepository
     {
-        private IDbConnection conn;
-
-        public IDbConnection Conn
-        {
-            get { return conn = ConnetionFactory.CreateConnection(conn); }
-        }
-        
         public List<ConfiguracionEntity> ObtenerTodo()
         {
             using (Conn)

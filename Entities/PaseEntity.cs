@@ -8,11 +8,12 @@ namespace Entities
 {
     public class PaseEntity
     {
-        public string PaseId { get; set; }
-        public int JugadorId { get; set; }
+        public string IdPase { get; set; }
+        public int Idjugador { get; set; }
+        public string Equipo { get; set; }
+        public string EquipoNombre { get; set; }
         public string Grupo { get; set; }
         public string Fase { get; set; }
-        public string EquipoId { get; set; }
         public int Goles { get; set; }
         public int Puntos { get; set; }
     }

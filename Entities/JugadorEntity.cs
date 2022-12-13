@@ -15,13 +15,13 @@ namespace Entities
                                 }
         public List<PartidoEntity> Marcadores { get; set; }
         public List<PaseEntity> Pases { get; set; }
-        public List<GoleadorEntity> Goleador { get; set; }
+        public List<GoleadorEntity> Goleadores { get; set; }
 
         public JugadorEntity()
         {
             Marcadores = new List<PartidoEntity>();
             Pases = new List<PaseEntity>();
-            Goleador = new List<GoleadorEntity>();
+            Goleadores = new List<GoleadorEntity>();
         }
 
     }

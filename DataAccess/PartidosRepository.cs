@@ -7,7 +7,6 @@ using System.Data;
 using Entities;
 using MySql.Data.MySqlClient;
 using System.Configuration;
-using System.Data;
 using Dapper;
 
 
@@ -17,7 +16,7 @@ namespace DataAccess
     {
         private static readonly string queryUpdateMarcador = @"UPDATE PollaPartidos  
                                             SET marcador1 = @MarcadorE1 , marcador2 = @MarcadorE2 
-                                            WHERE idjugador = @JugadorId AND idPartido= @PartidoId";
+                                            WHERE idjugador = @Idjugador AND idPartido= @PartidoId";
 
 
         public static List<PartidoEntity> GetPartidosAJugar()

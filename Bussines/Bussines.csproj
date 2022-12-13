@@ -41,10 +41,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfiguracionBO.cs" />
+    <Compile Include="GoleadorBO.cs" />
     <Compile Include="JugadorBO.cs" />
     <Compile Include="PartidosBO.cs" />
     <Compile Include="PasesBO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TipoPollaBO.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataAccess\DataAccess.csproj">
