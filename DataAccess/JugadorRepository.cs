@@ -19,10 +19,8 @@ namespace DataAccess
         {
             using (Conn) 
             {
-                string query = @"SELECT idjugador as JugadorId, nombre, puntosEtapa1, puntosEtapa2 FROM jugador inner join 
-                                ( SELECT idjugador from  PollaPartidos 
-                                    where idPolla = idPolla group by idjugador) 
-                               as tp using(idjugador)";
+                string query = @"SELECT idjugador as JugadorId, nombre, puntosEtapa1, puntosEtapa2 
+                                FROM jugador WHERE idPolla = @idPolla OR  idjugador = 0;";
                 return Conn.Query<JugadorEntity>(query, new { idPolla = TipoPolla });
             }
         }

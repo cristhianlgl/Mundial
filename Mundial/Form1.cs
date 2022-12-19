@@ -136,6 +136,7 @@ namespace Mundial
             List<PaseEntity> PasesResultadoE1 = PasesBO.GetPasesPorJugador(0,"GRUPO");
             List<GoleadorEntity> GoleadorResultadoE1 = GoleadorBO.GetPorJugador(0, "GRUPO");
             List<PaseEntity> PasesResultadoE2 = PasesBO.GetPasesPorJugador(0,"FINAL");
+            List<GoleadorEntity> GoleadorResultadoE2 = GoleadorBO.GetPorJugador(0, "FINAL");
             if (PartidosResultadosE1.Count + PartidosResultadosE2.Count == 0)
             { 
                 MessageBox.Show("No estan los resultados de los partidos","Error",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
@@ -148,10 +149,11 @@ namespace Mundial
                     {
                         JugadorBO.CalcularPartidos(jugador, PartidosResultadosE1, "E1");
                         PasesBO.CalcularPasesE1(jugador, PasesResultadoE1, "GRUPO");
-                        GoleadorBO.CalcularGoleador(jugador, GoleadorResultadoE1, "GRUPO");
+                        jugador.PuntosEtapa1 += GoleadorBO.CalcularGoleador(jugador, GoleadorResultadoE1, "GRUPO", puntoExtra: true);
                             
                         JugadorBO.CalcularPartidos(jugador, PartidosResultadosE2, "E2");
                         PasesBO.CalcularPasesE2(jugador, PasesResultadoE2,"FINAL");
+                        jugador.PuntosEtapa2 +=  GoleadorBO.CalcularGoleador(jugador, GoleadorResultadoE2, "FINAL", puntosGoleadorFinal: true);
                         JugadorBO.SavePuntosJugador(jugador);
                     }
                 }

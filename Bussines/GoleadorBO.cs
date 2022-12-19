@@ -10,30 +10,33 @@ namespace Bussines
     {
         private static GoleadorRepository repo = new GoleadorRepository();
 
-        public static void CalcularGoleador(JugadorEntity jugador, List<GoleadorEntity> resultados, string fase)
+        public static int CalcularGoleador(JugadorEntity jugador, List<GoleadorEntity> resultados, string fase,bool puntoExtra = false, bool puntosGoleadorFinal = false )
         {
             int puntos = 0;
             var resultado = resultados.Where(x => x.Fase == fase).FirstOrDefault();
             var goleadorJugador = jugador.Goleadores.Where(x => x.Fase == fase).FirstOrDefault();
+            int puntosGol = puntosGoleadorFinal ? 3 : 1;
+            int puntosMarcador = puntosGoleadorFinal ? 2 : 1;
 
+            if (goleadorJugador is null)
+                return puntos; 
+             
             if (resultado.IdGoleador == goleadorJugador.IdGoleador)
-                puntos++;
+                puntos += puntosGol;
 
             if (resultado.GolesMarcados == goleadorJugador.GolesMarcados)
-                puntos++;
+                puntos += puntosMarcador;
 
-            if (puntos == 2)
+            if (puntos == (puntosGol + puntosGol) && puntoExtra)
                 puntos++;
                         
-            jugador.PuntosEtapa1 += puntos;
+            return puntos;
         }
 
         public static List<GoleadorEntity> GetAll()
         {
             return repo.GetAll().ToList();
         }
-
-
 
         public static List<GoleadorEntity> GetPorJugador(int jugadorID, string fase)
         {

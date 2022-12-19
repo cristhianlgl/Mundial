@@ -79,27 +79,16 @@ namespace Bussines
                             //puntos adicionales
                             switch (paseJ.IdPase)
                             {
-                                case "ZCAM":
+                                case "ZCAMP":
                                     paseJ.Puntos += 5; //En total 5 puntos - Campeon
                                     break;
                                 case "ZTER":
                                     paseJ.Puntos += 3; //En Total 3 puntos -  Tercer Puesto
                                     break;
-                                case "GOL":
-                                    paseJ.Puntos += 3; //En Total 3 puntos - Nombre Goleador 
-                                    break;
                                 default:
                                     paseJ.Puntos += 2; //Acierto de pase de un Equipo
                                     break;
                             }
-                        }
-
-                        // se valida que el pase se Goleador y se compra los goles marcados coincidan con los resultados 
-                        //ya que puede ganar puntos aunque no coincida el goleador
-                        if (paseJ.IdPase == "GOL")
-                        {
-                            if (paseJ.Goles == result.Goles)  //Cantidade de Goles
-                                paseJ.Puntos += 2;
                         }
                     }
                 }

@@ -9,7 +9,7 @@ namespace DataAccess
         {
             using (Conn)
             {
-                string query = "SELECT idPolla as tipo FROM Mundial.PollaPartidos group by idPolla ;";
+                string query = "SELECT idPolla as tipo FROM jugador group by idPolla ;";
                 return Conn.Query<string>(query);
             }
         }
